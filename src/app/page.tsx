@@ -6,6 +6,7 @@ import { Button } from '@mantine/core';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import Image from 'next/image';
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useRecoilState } from 'recoil';
 import { v4 } from "uuid";
 
@@ -37,6 +38,14 @@ export default function Home() {
               updatedPercentages[i] = progress;
               return updatedPercentages;
             });
+
+            if (progress == 100) {
+              toast.success('O video foi carregado com successo', {
+                position: 'top-center',
+                duration: 4000
+              })
+            } 
+
           },
           (error) => {
             setIsLoading(false)
@@ -45,22 +54,21 @@ export default function Home() {
           },
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              setUrls([...urls, downloadURL]);
+              setUrls((prevUrls) => [...prevUrls, downloadURL]); // Use functional update to avoid using stale state
               setDownloadUrls(downloadURL);
-              resolve(downloadURL); // Resolve the promise with the downloadURL
+              resolve(downloadURL);   
             });
           });
       });
     });
 
+    try {
+      await Promise.all(promiseArray);
+    } catch (error) {
+      console.error('File upload error:', error);
+    }
 
-    Promise.allSettled(promiseArray).then(() => {
-      setIsLoading(false)
-      // faire du traitement quand tout les upload sont terminés
-    });
-
-
-
+    setIsLoading(false);
   }
 
   function handleFilesSelect(files: File[]) {
@@ -68,6 +76,8 @@ export default function Home() {
   }
 
   return (
+    <>
+    <Toaster />
     <main className="h-full min-h-screen p-1">
 
       <div className={`mx-auto md:mt-10 my-4 p-5 md:p-8 md:w-3/5 bg-zinc-900 rounded-2xl text-gray-300`}>
@@ -101,5 +111,6 @@ export default function Home() {
           </div>}
       </div>
     </main>
+    </>
   )
 }

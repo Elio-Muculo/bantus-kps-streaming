@@ -1,36 +1,61 @@
 import { Progress } from "@mantine/core";
-import Link from "next/link";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import toast, { Toaster } from "react-hot-toast";
 
 
 
 const FileItem = ({ file, uploadPercent, onFileDelete, downloadUrl}: { file: any, uploadPercent?: number, downloadUrl: string, onFileDelete: () => void }) => {
+  
+  const handleCopy = () => {
+    toast.success("O Link Foi Copiado", {
+      position: 'top-center'
+    })
+    console.log('Link copied to clipboard!');
+  };
+
   return (
-      <div className={`my-3 py-2 px-3 bg-zinc-300/20 border border-zinc-400 rounded flex justify-between items-center`} >
+    <>
+    <Toaster/>
+        <div className={`my-3 py-2 px-3 bg-zinc-300/20 border border-zinc-400 rounded flex justify-between items-center`} >
 
-      <div className="flex items-center gap-2 w-[90%]">
-        <IconFile />
-        <div className="w-[86%]">
-          <span className="flex gap-x-1">
-            <p className="text-zinc-200 max-w-[80%] truncate ">{file.name}</p>
-            <span>({file.sizeReadable})</span>
-            {uploadPercent! > 0 && <span className="ml-auto">{uploadPercent}%</span>}
-          </span>
-          <>{uploadPercent! > 0 && <Progress className="w-full my-1" size="sm" radius='xl' value={uploadPercent} />}</>
-        </div>
+<div className="flex items-center gap-2 w-[85%]">
+  <IconFile />
+  <div className="w-[86%]">
+    <span className="flex gap-x-1">
+      <p className="text-zinc-200 max-w-[80%] truncate ">{file.name}</p>
+      <span>({file.sizeReadable})</span>
+      {uploadPercent! > 0 && <span className="ml-auto">{uploadPercent}%</span>}
+    </span>
+    <>{uploadPercent! > 0 && <Progress className="w-full my-1" size="sm" radius='xl' value={uploadPercent} />}</>
+  </div>
 
-      </div>
+</div>
 
-      <Link href={downloadUrl} target="_blank">
-          <IconFile />
-      </Link>
 
-      <button className="px-4" onClick={onFileDelete}>
-        <IconClose />
-      </button>
+<CopyToClipboard text={downloadUrl} onCopy={handleCopy}>
+<div>
+    <DownloadIcon />
+</div>
+</CopyToClipboard>
 
-    </div>
+<button className="px-4" onClick={onFileDelete}>
+  <IconClose />
+</button>
+
+</div>
+    </>
   );
 };
+
+const DownloadIcon = () => {
+  return (
+    <svg className="min-w-[24px]" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2V15M12 15L9 12M12 15L15 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 20H21C21.5304 20 22.0391 19.7893 22.4142 19.4142C22.7893 19.0391 23 18.5304 23 18V8C23 7.46957 22.7893 6.96086 22.4142 6.58579C22.0391 6.21071 21.5304 6 21 6H16L14 4H10L8 6H3C2.46957 6 1.96086 6.21071 1.58579 6.58579C1.21071 6.96086 1 7.46957 1 8V18C1 18.5304 1.21071 19.0391 1.58579 19.4142C1.96086 19.7893 2.46957 20 3 20Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 
 const IconFile = () => {
   return (
