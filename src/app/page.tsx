@@ -96,7 +96,7 @@ export default function Home() {
         <h2 className="text-[26px] mb-2 font-semibold">Carregar Um Video</h2>
         <FilePicker onChange={(files: File[]) => handleFilesSelect(files)}
           className="md:mt-10"
-          isMultiple={true}
+          isMultiple={false}
           accepts={["image/webp", "video/mp4"]}
           formatList="WebP, MP4"
           percentages={Percentages}

@@ -28,7 +28,7 @@ const FilePicker = (
         isMultiple = true,
         accepts = ["image/*", ".pdf", "video/*"], // ["image/*", ".pdf", "audio/*"],
         formatList = "PNG, JPG, WebP, SVG, PDF, MP4, MP3",
-        maxFileSize = 100,
+        maxFileSize = 1,
         minFileSize = 0,
         percentages = [],
         downloadURLs,
@@ -68,7 +68,7 @@ const FilePicker = (
                     onError={onFilesError}
                     accepts={accepts} // accepts=["image/png", "image/jpeg", ".pdf", "audio/*", "video/*"]
                     multiple={isMultiple}
-                    maxFileSize={maxFileSize * 1000000} // maxFileSize={10000000}
+                    maxFileSize={maxFileSize * 838860800} // maxFileSize={10000000}
                     minFileSize={minFileSize * 1000000} // minFileSize={0}
                     clickable
                 >
@@ -81,7 +81,7 @@ const FilePicker = (
                         <div className="text-center text-sm">
                             <p className="font-semibold text-2xl">Deslize seus arquivos aqui</p>
                             <p className="text-gray-400 mt-3">Arraste e solte seus arquivos: {formatList} aqui.</p>
-                            <p className="text-gray-400">Tamanho maximo: {maxFileSize}MB</p>
+                            <p className="text-gray-400">Tamanho maximo: 800 MB</p>
 
                             <div className="text--caption my-2 text-gray-400">- OU -</div>
 
